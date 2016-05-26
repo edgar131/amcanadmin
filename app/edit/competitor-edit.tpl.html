@@ -1,0 +1,158 @@
+<h1>Competitor Info</h1>
+<div class="row competitor-edit">
+    <div class="col-md-6">
+        <form class="competitor-edit-form">
+            <div class="form-group">
+                <label for="firstname">First Name: </label>
+                <input ng-disabled="disableInfo" ng-model="competitorInfo.firstname" type="text" class="form-control"
+                       id="firstname" placeholder="First Name" name="firstname">
+            </div>
+            <div class="form-group">
+                <label for="lastname">Last Name: </label>
+                <input ng-disabled="disableInfo" ng-model="competitorInfo.lastname" type="text" class="form-control"
+                       id="lastname" placeholder="Last Name" name="lastname">
+            </div>
+            <div class="form-group">
+                <label for="sex">Sex: </label>
+                <select ng-disabled="disableInfo" ng-model="competitorInfo.sex" class="form-control" id="sex">
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="address">Address: </label>
+                <input ng-disabled="disableInfo" ng-model="competitorInfo.address" type="text" class="form-control"
+                       id="address" placeholder="Address" name="address">
+            </div>
+            <div class="form-group">
+                <label for="address2">Address 2: </label>
+                <input ng-disabled="disableInfo" ng-model="competitorInfo.address2" type="text" class="form-control"
+                       id="address2" placeholder="Address 2" name="address2">
+            </div>
+            <div class="form-group">
+                <label for="city">City: </label>
+                <input ng-disabled="disableInfo" ng-model="competitorInfo.city" type="text" class="form-control"
+                       id="city" placeholder="City" name="city">
+            </div>
+            <div class="form-group">
+                <label for="state">State: </label>
+                <input ng-disabled="disableInfo" ng-model="competitorInfo.state" type="text" class="form-control"
+                       id="state" placeholder="State" name="state">
+            </div>
+            <div class="form-group">
+                <label for="zip">Zip: </label>
+                <input ng-disabled="disableInfo" ng-model="competitorInfo.zip" type="text" class="form-control"
+                       id="zip" placeholder="Zip Code" name="zip">
+            </div>
+            <div class="form-group">
+                <label for="country">Country: </label>
+                <input ng-disabled="disableInfo" ng-model="competitorInfo.country" type="text" class="form-control"
+                       id="country" placeholder="Country" name="country">
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of birth: </label>
+
+                <div class="input-group">
+                    <input ng-disabled="disableInfo" type="text" id="dob" name="dob" class="form-control"
+                           uib-datepicker-popup="MM/dd/yyyy"
+                           ng-model="dob" datepicker-options="datepickerOptions" is-open="datepickerOptions.opened" ng-required="true"
+                           close-text="Close"/>
+                    <span class="input-group-btn">
+                        <button ng-disabled="disableInfo" type="button" class="btn btn-default"
+                                ng-click="openDatePicker($event)">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="homephone">Home Phone #: </label>
+                <input ng-disabled="disableInfo" ng-model="competitorInfo.homephone" type="text" class="form-control"
+                       id="homephone" placeholder="Home Phone #" name="homephone">
+            </div>
+
+            <div class="form-group">
+                <label for="mobilephone">Mobile Phone #: </label>
+                <input ng-disabled="disableInfo" ng-model="competitorInfo.cellphone" type="text" class="form-control"
+                       id="mobilephone" placeholder="Mobile Phone #" name="mobilephone">
+            </div>
+
+            <div class="form-group">
+                <label for="rank">Rank: </label>
+                <select id="rank" name="rank" ng-disabled="disableInfo" required ng-model="competitorInfo.rank" class="form-control" ng-options="rank.value as rank.label for rank in ranks"></select>
+            </div>
+
+            <label for="judoclub">Judo Club: </label>
+            <div class="form-group">
+                <select class="form-control"
+                        ng-options="club as (club.name + ' (' + club.country + ')') for club in clubs"
+                        ng-model="chosenClub"
+                        ng-change="clubChange()"
+                        ng-disabled="disableInfo"
+                        placeholder="Select Club"></select>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-8">
+                    <input ng-disabled="disableInfo" ng-model="competitorInfo.judoclub" type="text" class="form-control"
+                           id="judoclub" placeholder="Judo Club Name" name="judoclub">
+                </div>
+                <div class="form-group col-lg-4">
+                    <input ng-disabled="disableInfo" ng-model="competitorInfo.clubcountry" type="text" class="form-control"
+                           id="judoclubcountry" placeholder="Judo Club Country" name="judoclubcountry">
+                </div>
+            </div>
+
+            <button ng-disabled="!disableInfo" class="btn btn-primary" ng-click="disableInfo = false">Unlock</button>
+            <button ng-disabled="disableInfo" class="btn btn-primary" ng-click="updateInfo()">Save Info</button>
+            <button class="btn btn-primary" ng-click="print()">Print Export</button>
+            <div class="error" ng-show="infoError">Error Saving Competitor Info!
+            </div>
+            <div class="success" ng-show="infoSaved">Competitor Info Saved</div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <form class="weight form-inline">
+            <h2>Weight(kg)</h2>
+            <div style="font-weight:bold;">Preregistration Weight: {{(competitorInfo.weight_pre && competitorInfo.weight_pre > 0) ? competitorInfo.weight_pre + 'kg' : 'N/A'}}</div>
+            <input ng-model="competitorInfo.weight" type="text" class="form-control"
+                   id="weight" placeholder="Weight" name="weight">
+            <button ng-disabled="disableWeightSubmit" class="btn btn-primary" ng-click="submitWeight()">Submit Weight
+            </button>
+            <div class="error" ng-show="weightInfo.error">Error saving weight. Please double check whether the weight is
+                valid and try again.
+            </div>
+            <div class="success" ng-show="weightInfo.saved">Weight Saved</div>
+        </form>
+        <br/>
+
+        <form class="payment">
+            <h2>Payment</h2>
+
+            <div class="form-group">
+                <label for="paymentamount">Amount Paid: </label>
+                <input ng-model="competitorInfo.paymentamount" type="text" class="form-control"
+                       id="paymentamount" placeholder="Amount Paid" name="paymentamount">
+            </div>
+            <div class="form-group">
+                <label for="paymentstatus">Payment Status: </label>
+                <input ng-disabled="true" ng-model="competitorInfo.paymentstatus" type="text" class="form-control"
+                       id="paymentstatus" placeholder="Payment Status" name="paymentstatus">
+            </div>
+            <button class="btn btn-primary" ng-click="updatePayment()">Update Payment</button>
+            <div class="error" ng-show="paymentError">Error saving payment info. Please double check whether the payment is
+                valid and try again.
+            </div>
+            <div class="success" ng-show="paymentSaved">Payment Info Saved</div>
+        </form>
+
+        <form class="divisions">
+            <h2>Divisions <span style="font-weight:bold;font-size:18px">(Age: {{competitorInfo.age}})</span></h2>
+            <division-edit competitor-divisions="competitorDivisions" sex="{{competitorInfo.sex}}"></division-edit>
+            <button class="btn btn-primary" ng-click="updateDivisions()">Save Divisions</button>
+            <div class="error" ng-show="divisionError">Error saving divisions!</div>
+            <div class="success" ng-show="divisionSaved">Divisions Saved</div>
+        </form>
+    </div>
+</div>
+

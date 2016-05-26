@@ -1,0 +1,92 @@
+<div class="modal-header">
+    <h3 class="modal-title">Add Competitor</h3>
+</div>
+<form name="addcompetitorform" class="form-vertical">
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="firstname">First Name: </label>
+            <input required ng-model="competitorInfo.firstname" type="text" class="form-control"
+                   id="firstname" placeholder="First Name" name="firstname">
+        </div>
+
+        <div class="form-group">
+            <label for="lastname">Last Name: </label>
+            <input required ng-model="competitorInfo.lastname" type="text" class="form-control"
+                   id="lastname" placeholder="Last Name" name="lastname">
+        </div>
+
+        <div class="form-group">
+            <label for="sex">Sex: </label>
+            <select ng-model="competitorInfo.sex" class="form-control" id="sex">
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="dob">Date of birth: </label>
+
+            <div class="input-group">
+                <input required type="text" id="dob" name="dob" class="form-control"
+                       uib-datepicker-popup="MM/dd/yyyy"
+                       ng-model="dob" datepicker-options="datepickerOptions" is-open="datepickerOptions.opened"
+                       ng-required="true"
+                       close-text="Close"/>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"
+                                    ng-click="datepickerOptions.opened = true">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </button>
+                        </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="rank">Rank: </label>
+            <select id="rank" name="rank" required ng-model="competitorInfo.rank" class="form-control" ng-options="rank.value as rank.label for rank in ranks"></select>
+        </div>
+
+        <label for="judoclub">Judo Club: </label>
+
+        <div class="form-group">
+            <select required class="form-control"
+                    ng-change="clubChange()"
+                    ng-options="club as (club.name + ' (' + club.country + ')') for club in clubs"
+                    ng-model="chosenClub"
+                    placeholder="Select Club"></select>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-8">
+                <input required ng-model="competitorInfo.judoclub" type="text" class="form-control"
+                       id="judoclub" placeholder="Judo Club Name" name="judoclub">
+            </div>
+            <div class="form-group col-lg-4">
+                <input required ng-model="competitorInfo.clubcountry" type="text" class="form-control"
+                       id="judoclubcountry" placeholder="Judo Club Country" name="judoclubcountry">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="weight">Weight: </label>
+            <input required ng-model="competitorInfo.weight" type="text" class="form-control"
+                   id="weight" placeholder="Weight(kg)" ng-init="competitorInfo.weight = 0" name="weight">
+        </div>
+
+        <div class="form-group">
+            <label for="paymentamount">Amount Paid: </label>
+            <input required ng-model="competitorInfo.paymentamount" type="text" class="form-control"
+                   id="paymentamount" placeholder="Amount Paid" name="paymentamount">
+        </div>
+
+        <h3>Divisions</h3>
+        <division-edit competitor-divisions="competitorDivisions" sex="{{competitorInfo.sex}}"></division-edit>
+
+        <div style="color:red;font-weight:bold;" ng-if="error">{{error}}</div>
+    </div>
+    <div class="modal-footer">
+        {{!addcompetitorform.$valid}} -- {{!validateDivisions()}}
+        <button class="btn btn-primary" ng-disabled="!addcompetitorform.$valid || !validateDivisions()" type="submit" ng-click="ok()">Save
+        </button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</form>
